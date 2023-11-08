@@ -294,3 +294,87 @@ if __name__ == "__main__":
 # actuators (stepper motor, etc.)
 # network (REST, MQTT, etc.)
 # database (SQL, NoSQL, etc.)
+
+
+# import RPi.GPIO as GPIO
+# import time
+# import threading
+
+# # GPIO pins
+# directionPin = 24
+# turningSignalPin = 23
+
+# # setup
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(directionPin, GPIO.IN)
+# GPIO.setup(turningSignalPin, GPIO.IN)
+# GPIO.setup(directionPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # to avoid floating state
+# GPIO.setup(turningSignalPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # to avoid floating state
+
+# # variables
+# directionPinLastState = 0
+# directionPinState = 0
+# turningSignalPinState = 0
+
+# counter = 0
+
+# last_input_time = time.time()
+# desiredDelay = 1.5
+
+# def isDelayElapsed(desiredDelay):
+#     global last_input_time
+#     current_input_time = time.time()
+#     if current_input_time - last_input_time >= desiredDelay:
+#         last_input_time = current_input_time
+#         return True
+#     return False
+
+# def addInp(value):
+#     global last_input_time
+#     last_input_time = time.time()
+#     global counter
+#     counter = counter + value
+
+# def gpio_monitor():
+#     global directionPinState
+#     global directionPinLastState
+
+#     while True:
+#         directionPinState = GPIO.input(directionPin)
+#         turningSignalPinState = GPIO.input(turningSignalPin)
+#         if directionPinState != directionPinLastState:
+#             if turningSignalPinState != directionPinState:
+#                 addInp(1)
+#             else:
+#                 addInp(-1)
+#             directionPinLastState = directionPinState
+#         time.sleep(0.001)
+
+# def evaluate_counter():
+#     while True:
+#         if isDelayElapsed(desiredDelay):
+#             print("Counter Value:", counter)
+#         time.sleep(1)  # Adjust the delay between evaluations
+
+# # Create two threads
+# gpio_thread = threading.Thread(target=gpio_monitor)
+# counter_thread = threading.Thread(target=evaluate_counter)
+
+# try:
+#     gpio_thread.start()
+#     counter_thread.start()
+
+#     gpio_thread.join()
+#     counter_thread.join()
+
+# except KeyboardInterrupt:
+#     print("KeyboardInterrupt")
+#     GPIO.cleanup()
+#     exit(0)
+# except Exception as e:
+#     print(e)
+#     GPIO.cleanup()
+#     exit(0)
+# finally:
+#     GPIO.cleanup()
+#     exit(0)
